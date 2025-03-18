@@ -4,3 +4,6 @@
 /public
 package.json
 package-lock.json
+rebuild.bat
+gitpush.bat
+
