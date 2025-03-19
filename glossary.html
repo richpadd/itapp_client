@@ -1,0 +1,99 @@
+<!------------------------------------------------------------------------------
+// ITMD-504 - Programming and Application Foundations
+// Final Project - IT Glossary Manager
+// Richard Paddock (A20603128)
+// ----------------------------------------------------------------------------
+// File: client/glossary.html
+// Descripton: This is the main glossary page, using bootstrap and javascript 
+// to provide the full glossary to users, with filters and searches, calling our 
+// node.js API server
+// ---------------------------------------------------------------------------->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Training Glossary</title>
+    
+    <!-- Link to CSS & Bootstrap Files -->
+    <link href="src/gloassary.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <h1>API Data Table</h1>
+        <p>Displaying data fetched from a Node.js API</p>
+    </div>
+
+    <!-- Table Section -->
+    <div class="container">
+        <h2 class="mt-4">Fetched Data</h2>
+        <table class="table table-bordered" id="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be injected here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Include jQuery and Bootstrap JS (for Bootstrap's JavaScript features) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Fetch Data from Node.js API -->
+    <script>
+        // Function to fetch data from the API and display it in the table
+        async function fetchData() {
+            try {
+                // Make a request to the Node.js API (replace with your actual API URL)
+                const response = await fetch('http://localhost:3000/api/data');
+                const data = await response.json();
+
+                // Get the table body element
+                const tableBody = document.querySelector('#data-table tbody');
+                
+                // Clear any existing table rows
+                tableBody.innerHTML = '';
+
+                // Loop through the data and create table rows
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+
+                    // Create table cells for each data field
+                    const idCell = document.createElement('td');
+                    idCell.textContent = item.id;
+
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = item.name;
+
+                    const valueCell = document.createElement('td');
+                    valueCell.textContent = item.value;
+
+                    // Append cells to the row
+                    row.appendChild(idCell);
+                    row.appendChild(nameCell);
+                    row.appendChild(valueCell);
+
+                    // Append the row to the table body
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Call the fetchData function when the page loads
+        window.onload = fetchData;
+    </script>
+</body>
+</html>
