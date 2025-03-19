@@ -28,63 +28,76 @@
         <p>Displaying data fetched from a Node.js API</p>
     </div>
 
-    <!-- Table Section -->
-    <div class="container">
-        <h2 class="mt-4">Fetched Data</h2>
+    <!-- Filters -->
+    <div class="container mt-4">
+        <h2>Search Terms</h2>
+        <div class="form-inline mb-3">
+            <label class="mr-2">Category:</label>
+            <select id="categorySelect" class="form-control mr-2">
+                <option value="">All Categories</option>
+            </select>
+
+            <label class="mr-2">Name Search:</label>
+            <input type="text" id="nameSearch" class="form-control mr-2" placeholder="Enter name">
+
+            <button onclick="getData()" class="btn btn-primary">Search</button>
+        </div>
+    
+        <!-- Table Section -->
         <table class="table table-bordered" id="data-table">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Category</th>
                     <th>Name</th>
-                    <th>Value</th>
+                    <th>Definition</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Data will be injected here dynamically -->
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
-
-    <!-- Include jQuery and Bootstrap JS (for Bootstrap's JavaScript features) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <!-- Fetch Data from Node.js API -->
+ 
     <script>
-        // Function to fetch data from the API and display it in the table
-        async function fetchData() {
+        // Load categories into the dropdown
+        async function loadCategories() {
             try {
-                // Make a request to the Node.js API (replace with your actual API URL)
-                const response = await fetch('http://localhost:3000/api/data');
+                const response = await fetch('http://localhost:3000/api/categories');
+                const categories = await response.json();
+                const categorySelect = document.getElementById('categorySelect');
+
+                categories.forEach(cat => {
+                    let option = document.createElement('option');
+                    option.value = cat.id;
+                    option.textContent = cat.name;
+                    categorySelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        // Fetch and display terms
+        async function getData() {
+            try {
+                const category_id = document.getElementById('categorySelect').value;
+                const term_name = document.getElementById('nameSearch').value;
+
+                let queryParams = new URLSearchParams();
+                if (category_id) queryParams.append("category_id", category_id);
+                if (term_name) queryParams.append("term_name", term_name);
+
+                const response = await fetch(`http://localhost:3000/api/terms?${queryParams}`);
                 const data = await response.json();
 
-                // Get the table body element
                 const tableBody = document.querySelector('#data-table tbody');
-                
-                // Clear any existing table rows
                 tableBody.innerHTML = '';
 
-                // Loop through the data and create table rows
                 data.forEach(item => {
                     const row = document.createElement('tr');
-
-                    // Create table cells for each data field
-                    const idCell = document.createElement('td');
-                    idCell.textContent = item.id;
-
-                    const nameCell = document.createElement('td');
-                    nameCell.textContent = item.name;
-
-                    const valueCell = document.createElement('td');
-                    valueCell.textContent = item.value;
-
-                    // Append cells to the row
-                    row.appendChild(idCell);
-                    row.appendChild(nameCell);
-                    row.appendChild(valueCell);
-
-                    // Append the row to the table body
+                    row.innerHTML = `
+                        <td>${item.category}</td>
+                        <td>${item.name}</td>
+                        <td>${item.definition}</td>
+                    `;
                     tableBody.appendChild(row);
                 });
             } catch (error) {
@@ -92,9 +105,11 @@
             }
         }
 
-        // Call the fetchData function when the page loads
-        window.onload = fetchData;
+        // Load categories and fetch data on page load
+        window.onload = async () => {
+            await loadCategories();
+            getData();
+        };
     </script>
 </body>
-
 </html>
