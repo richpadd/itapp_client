@@ -1,0 +1,41 @@
+/*------------------------------------------------------------------------------
+// ITMD-504 - Programming and Application Foundations
+// Final Project - IT Terms
+// Richard Paddock (A20603128)
+// ----------------------------------------------------------------------------
+// File: src/termslist.css
+// Descripton: Styling for our main terms list page
+// ----------------------------------------------------------------------------*/
+
+body {
+    margin-top: 50px;
+}
+
+.header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.table {
+    margin-top: 30px;
+}
+
+.table th {
+    background-color: #f8f9fa;
+}
+
+.table-bordered td, .table-bordered th {
+    border: 1px solid #dee2e6;
+}
