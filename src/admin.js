@@ -3,7 +3,7 @@
 // Final Project - IT Terms 
 // Richard Paddock (A20603128)
 // ----------------------------------------------------------------------------
-// File: app/admin.js
+// File: app/admin.js (built to react app and renamed in production as adminapp.html)
 // Descripton: This is the main React web app code for managing the CRUD actions for the IT terms database
 // ----------------------------------------------------------------------------
 
@@ -92,12 +92,11 @@ const AdminApp = () => {
 
   // ---- FUNCTIONALITY HANDLING ------
 
-  // Fetch all of the categories from our API
+  // Fetch all of the categories from our public API 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(apiURL+"/api/categories", {
-        method: "GET",          
-        credentials: "include",  
+      const response = await fetch(apiURL+"/public-api/categories", {
+        method: "GET",
     });
       const data = await response.json();
       if (!response.ok) throw new Error('Failed to fetch categories');  
@@ -108,7 +107,7 @@ const AdminApp = () => {
   };
   
   //----------------------------------------------------------------------------------
-  // Fetch all the IT terms from our API
+  // Fetch all the IT terms from our public API
   // This is only done on load and update/delete to avoid excessive calls. Table filtering is done by using a separate display list 
 
   const fetchTerms = async () => {
@@ -117,10 +116,9 @@ const AdminApp = () => {
       const queryParams = new URLSearchParams();
   
       // Build URL and execute
-      const url = `${apiURL}/api/terms${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const url = `${apiURL}/public-api/terms${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
       const response = await fetch(url, {
-        method: "GET",          
-        credentials: "include",  
+        method: "GET",
     });
       const data = await response.json();
       if (!response.ok) throw new Error('Failed to fetch terms');  
@@ -401,11 +399,12 @@ const AdminApp = () => {
       {/* ----------------------------------  Header Section  -------------------------------------*/}  
       <div>
         <div className="header row d-flex align-items-center">
-          <div className="col text-start"><h1>IT Terms Admin Console</h1></div>
+          <div className="col text-start"><h1>IT Terms <span className="head-span">Admin Console</span></h1></div>
           <div className="col text-start">
-            <a className="d-block" href="../index.html" target="_blank">&gt; IT Terms Glossary</a>
-            <a className="d-block" href="../quiz.html" target="_blank">&gt; IT Terms Quiz</a>
-            {user && (<button className="d-block header-labels" onClick={logout}>Logout</button>)}
+            <a className="d-block" href="index.html">&gt; Landing Page</a>
+            <a className="d-block" href="termslist.html">&gt; Glossary</a>
+            <a className="d-block" href="termsquiz.html">&gt; Quiz</a>
+            {user && (<button className="d-block logout-button" onClick={logout}>Logout</button>)}
           </div>
         </div>
       </div>

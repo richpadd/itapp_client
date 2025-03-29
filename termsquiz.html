@@ -3,8 +3,8 @@
 // Final Project - IT Terms
 // Richard Paddock (A20603128)
 // ----------------------------------------------------------------------------
-// File: client/termslist.html
-// Descripton: Provides the full glossary of terms from the API server using vue.js for listing and filtering
+// File: client/termsquiz.html
+// Descripton: Runs the simple quiz using javascript for querying the questions and bootstrap for the UI
 // ---------------------------------------------------------------------------->
 
 <!DOCTYPE html>
@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Terms Glossary</title>
+    <title>IT Terms Quiz</title>
     
     <!-- Link to latest vue.js UMD version  -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16"></script>
@@ -23,95 +23,65 @@
 
 </head>
 <body>
-    <!-- Header Section -->
-    <div class="header">
-        <h1>IT Terms Glossary</h1>
-        <p></p>
-    </div>
+    <!-- Show our standard header -->
+    <div class="header row d-flex align-items-center">
+        <div class="col text-start"><h1>IT Terms <span class="head-span">Quiz</span></h1></div>
+        <div class="col text-start">
+        <a class="d-block" href="index.html">&gt; Landing Page</a>
+        <a class="d-block" href="adminapp.html">&gt; Admin Console</a>
+        <a class="d-block" href="termslist.html">&gt; Glossary</a>
+        </div>
+    </div> 
 
-    <!-- Filters -->
-    <div id="app">
-        <div class="container mt-4">
-            <h2>Search Terms</h2>
-            <div class="form-inline mb-3">
-                <label class="mr-2">Category:
-                    <select id="categorySelect" class="form-control mr-2" v-model="selectedCategory">
-                        <option value="">All Categories</option>
-                        <option v-for="category in categories" :key="category.id" :value="category.name">
-                            {{ category.name }}
-                        </option>
-                    </select>
-                </label>
-                <label class="mr-2">Name Search:
-                    <input type="text" id="nameSearch" class="form-control" placeholder="Enter name" v-model="searchText">
-                </label>
+    <div class="row">
+        <div class="col-6 px-5 pb-4"><h2>Take the IT Terms Quiz</h2><div class="border-bottom my-3"></div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-6 px-5">
+            <!-- Slider 1: Questions -->
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <div class="slider-label">Number of Questions</div>
+                    <div class="value-display" id="questionsValue">10</div>
+                </div>
+                <input type="range" id="questionsSlider" class="slider" min="5" max="20" value="10" step="1">
             </div>
 
-            <!-- Our Data Table -->
-            <table class="table table-bordered" id="data-table">
-                <thead><tr><th>ID</th><th>Name</th></tr></thead>
-                <tbody>
-                    <template v-for="(item, index) in filteredData">
-                        <!-- Check if catname is different from the previous item's catname -->
-                        <tr v-if="index === 0 || item.catname !== filteredData[index - 1].catname">
-                          <td colspan="3" class="category-row">{{ item.catname }}</td>
-                        </tr>
-                        <tr>
-                          <td>{{ item.termname }}</td>
-                          <td>{{ item.definition }}</td>
-                        </tr>
-                      </template>
-                </tbody>
-            </table>
+            <!-- Slider 2: Time per Question -->
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <div class="slider-label">Time per Question (seconds)</div>
+                    <div class="value-display" id="timeValue">20</div>
+                </div>
+                <input type="range" id="timeSlider" class="slider" min="5" max="60" value="30" step="1">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 p-5">
+            <button class="btn btn-primary" id="submitBtn">Let's Go!</button
         </div>
     </div>
 
+    
+
 <script>
-    new Vue({
-        el: '#app',
-        data: {
-            data: [], // Main data for the table
-            categories: [], // Data for the dropdown
-            selectedCategory: '', // Selected dropdown value
-            searchText: '' // Text from the search box
-        },
-        computed: {
-            filteredData() {
-                return this.data.filter(item => {
-                    // Filter by selected category
-                    const matchesCategory = this.selectedCategory
-                        ? item.catname === this.selectedCategory
-                        : true;
+    // Update Questions Slider Value
+    const questionsSlider = document.getElementById('questionsSlider');
+    const questionsValue = document.getElementById('questionsValue');
+    questionsSlider.addEventListener('input', function() {
+        questionsValue.textContent = questionsSlider.value;
+    });
 
-                    // Filter by search text
-                    const matchesSearch = this.searchText
-                        ? item.termname.toLowerCase().includes(this.searchText.toLowerCase())
-                        : true;
-
-                    return matchesCategory && matchesSearch;
-                });
-            }
-        },
-        created() {
-            // Fetch data for the table from our API
-            fetch('http://localhost:3000/api/terms')
-                .then(response => response.json())
-                .then(json => {
-                    this.data = json;
-                })
-                .catch(error => console.error('Error fetching terms:', error));
-
-
-            // Fetch data for the dropdown categories from our API
-            fetch('http://localhost:3000/api/categories') 
-                .then(response => response.json())
-                .then(json => {
-                    this.categories = json;
-                })
-                .catch(error => console.error('Error fetching categories:', error));
-     
-        }
+    // Update Time per Question Slider Value
+    const timeSlider = document.getElementById('timeSlider');
+    const timeValue = document.getElementById('timeValue');
+    timeSlider.addEventListener('input', function() {
+        timeValue.textContent = timeSlider.value;
     });
 </script>
+
 </body>
 </html>

@@ -18,7 +18,7 @@ body {
 /* Add some outline to the h1 text */
 h1  {
   padding-top:5px;
-  color: white;
+  color: cyan;
   font-size:35px;
   text-shadow: 
   0.3px 0.3px 0px black,   /* Shadow on the bottom-right */
@@ -36,12 +36,18 @@ h1  {
   text-align: center;
   height: 100px;
   padding-left:20px;
+  line-height: 16px;
 }
+
+.head-span {
+  color: white;
+}
+
 /* Sytle the header links */
 .header a {
-  font-size:14px;
+  font-size:15px;
   color: white;
-  padding:1px;
+  padding:0px;
   text-decoration: none;
 }
 
@@ -50,18 +56,18 @@ h1  {
 }
 
 /* Sytle the header logout button */
-.header button {
+.logout-button {
   margin-top:5px;
   font-size:14px;
   color: black;
   text-decoration: none;
   box-shadow: 0px 0px 5px white;
   border-radius: 20px; 
-  transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
 }
 
 /* Add a button push effect on hover */
-.header button:hover {
+.logout-button:hover {
   box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3); /* Inner shadow */
 }
 
