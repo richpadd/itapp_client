@@ -1,6 +1,6 @@
 # dependencies
 /node_modules
-/src
+/static
 /public
 package.json
 package-lock.json

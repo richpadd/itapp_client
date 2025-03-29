@@ -1,0 +1,258 @@
+/*------------------------------------------------------------------------------
+// ITMD-504 - Programming and Application Foundations
+// File: src/index.css / // Descripton: Main app styling
+// ----------------------------------------------------------------------------*/
+
+/* GENERAL */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/* Set the Google Poppins font and the main background color, remove the horizontal scroll bar */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #F5F5F5;
+  overflow-x: hidden;
+}
+
+/* Add some outline to the h1 text */
+h1  {
+  padding-top:5px;
+  color: white;
+  font-size:35px;
+  text-shadow: 
+  0.3px 0.3px 0px black,   /* Shadow on the bottom-right */
+  -0.3px -0.3px 0px black, /* Shadow on the top-left */
+  0.3px -0.3px 0px black,  /* Shadow on the top-right */
+  -0.3px 0.3px 0px black;  /* Shadow on the bottom-left */
+}
+
+/* HEADER SECTION */
+
+/* Add styling to the header section */
+.header {
+  background-color: darkblue;
+  color: white;
+  text-align: center;
+  height: 100px;
+  padding-left:20px;
+}
+/* Sytle the header links */
+.header a {
+  font-size:14px;
+  color: white;
+  padding:1px;
+  text-decoration: none;
+}
+
+.header a:hover {
+  color: yellow;
+}
+
+/* Sytle the header logout button */
+.header button {
+  margin-top:5px;
+  font-size:14px;
+  color: black;
+  text-decoration: none;
+  box-shadow: 0px 0px 5px white;
+  border-radius: 20px; 
+  transition: all 0.3s ease-in-out; 
+}
+
+/* Add a button push effect on hover */
+.header button:hover {
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3); /* Inner shadow */
+}
+
+/* LOGIN SECTION */
+
+/* Add styling to the login section */
+.login {
+  background-color: lightgray;
+  padding:20px;
+}
+
+/* Add styling to the login section */
+.login-col {
+  padding:10px;
+}
+
+/* Sytle the header logout button */
+.login button {
+  margin-top:5px;
+  font-size:18px;
+  color: black;
+  text-decoration: none;
+  box-shadow: 0px 0px 5px blue;
+  border-radius: 20px; 
+  transition: all 0.3s ease-in-out; 
+  padding:0 30px;
+}
+
+/* Add a button push effect on hover */
+.login button:hover {
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3); /* Inner shadow */
+}
+
+/* MAIN APP - TOP FORM & BUTTONS */
+
+/* Add styling to the main app section */
+.main-app {
+  margin-top:5px;
+  padding:0 20px;
+}
+
+/* Style the form labels */
+.form-labels {
+  font-size: 12px;
+  padding-left: 12px;
+  font-weight: 600;
+}
+
+/* Darken the modal backdrop further */
+.modal-backdrop.show {
+  background-color: rgba(0, 0, 0, 1); 
+}
+
+/* Sytle the button section and fix the height so buttons on/off dont change the layout */
+.button-section{
+  margin-top:10px;
+}
+
+.button-section span{
+  color:black;
+  font-size:16px;
+  margin-top:10px;
+  line-height: 31px;
+  border-top: solid 1px darkgray;
+  border-bottom: solid 1px darkgrey; 
+  transition: all 0.3s ease-in-out; 
+  padding:0 15px;
+} 
+
+/* Make the buttons look cooler and fix the width */
+.adminButton {
+  width:150px;
+  margin-right: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.6);
+  border-radius: 8x; 
+  transition: all 0.3s ease-in-out; 
+  font-size:14px;
+  padding:10px;
+}
+
+/* Add a button push effect on hover */
+.adminButton:hover {
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3); /* Inner shadow */
+}
+
+/* MAIN APP - TABLE SECTION */
+
+/* Style the table container and scrollable div */
+.table-container {
+  max-width: 100%;
+  margin: 20px auto;
+  border-bottom: 2px;
+  border: 2px solid darkgrey;
+}
+
+/* Make the table responsive and scrollable */
+.table-responsive {
+  max-height: 300px; 
+  table-layout: fixed;
+  overflow-y: auto; 
+}
+/* Don't move our columns around */
+.table {
+  table-layout: fixed;
+}
+
+/* Styling for the sticky header */
+.sticky-header th {
+  position: sticky;
+  top: 0;
+  background-color: lightgray;
+  z-index: 1; 
+}
+
+/* Add borders, padding, and striping on the table. Allow text wrapping for small screen */
+.table th, .table td {
+  border: 1px solid #ddd;
+  border-top: 0px;
+  padding: 8px;
+  text-align: left;
+  overflow-wrap: break-word;
+  white-space: normal; 
+  font-size:14px;
+}
+
+/* Add a nice hover effect to table rows */
+.table tbody tr:hover {
+  background-color: lightgrey;
+  cursor: pointer; 
+}
+
+/* Fix width for the table columns to help with display asthetics */
+.col-1 {
+  width: 10%;
+}
+
+.col-2 {
+  width: 20%;
+}
+
+.col-3 {
+  width: 70%;
+}
+
+/* RESPONSIVE ADJUSTMENTS */
+
+/* Breakpoint - Shrink a bit for smaller PC/laptop/tablet size screens */
+@media (max-width: 1200px) {
+  .table {font-size: 16px; }
+  h1 {font-size:25px;}
+
+  .table th, .table td {
+    padding: 5px;
+    font-size:12px;
+  }
+
+  .col-1 {
+    width: 20%;
+  }
+  
+  .col-2 {
+    width: 30%;
+  }
+  
+  .col-3 {
+    width: 50%;
+  }
+
+}
+
+/* Breakpoint - Shrink more for phone size screens  */
+
+@media (max-width: 400px) {
+
+  h1 {font-size:20px;}
+
+  .table {font-size: 12px; }
+
+  .table th, .table td {
+    padding: 5px;
+  }
+
+  .col-1 {
+    width: 25%;
+  }
+  
+  .col-2 {
+    width: 30%;
+  }
+  
+  .col-3 {
+    width: 45%;
+  }
+}
