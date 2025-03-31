@@ -104,7 +104,8 @@
         },
         created() {
             // Fetch data for the table from our public terms API
-            fetch('http://localhost:3000/public-api/terms')
+            // fetch('http://localhost:3000/public-api/terms')
+            fetch('https://rpadd.duckdns.org/public-api/terms')
                 .then(response => response.json())
                 .then(json => {
                     this.data = json.data;
@@ -113,13 +114,13 @@
 
 
             // Fetch data for the dropdown categories from our public categories API
-            fetch('http://localhost:3000/public-api/categories') 
+            // fetch('http://localhost:3000/public-api/categories')
+            fetch('https://rpadd.duckdns.org/public-api/categories')
                 .then(response => response.json())
                 .then(json => {
                     this.categories = json.data;
                 })
                 .catch(error => console.error('Error fetching categories:', error));
-     
         }
     });
 </script>
