@@ -22,8 +22,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
-<body>
-    <!-- Show our standard header -->
+<body onload="init()">
+
+    <!-- ================  Standard Header ================== -->
+
     <div class="header row d-flex align-items-center">
         <div class="col text-start"><h1>IT Terms <span class="head-span">Quiz</span></h1></div>
         <div class="col text-start">
@@ -33,41 +35,115 @@
         </div>
     </div> 
 
-    <div class="row">
-        <div class="col-6 px-5 pb-4"><h2>Take the IT Terms Quiz</h2><div class="border-bottom my-3"></div>
+    <!-- ================  Quiz Selection Section - Choose Questions & Time ================== -->
+
+    <div id="quiz-selection" style="display: block">
+        <div class="row quiz-header">
+            <div class="col-12 col-md-6 px-4 pb-3 quiz"><h2 class="quiz-heading">Test Yourself</h2></div>
         </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-6 px-5">
-            <!-- Slider 1: Questions -->
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <div class="slider-label">Number of Questions</div>
-                    <div class="value-display" id="questionsValue">10</div>
+        
+        <div class="row pt-3 quiz-selector">
+            <div class="col-12 col-md-6 px-4 pt-2">
+                <!-- Slider 1: Questions -->
+                <div class="slider-container">
+                    <div class="slider-wrapper">
+                        <div class="slider-label">Number of Questions</div>
+                        <div class="value-display" id="questionsValue">10</div>
+                    </div>
+                    <input type="range" id="questionsSlider" class="slider" min="1" max="20" value="10" step="1">
                 </div>
-                <input type="range" id="questionsSlider" class="slider" min="5" max="20" value="10" step="1">
-            </div>
 
-            <!-- Slider 2: Time per Question -->
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <div class="slider-label">Time per Question (seconds)</div>
-                    <div class="value-display" id="timeValue">20</div>
+                <!-- Slider 2: Time per Question -->
+                <div class="slider-container">
+                    <div class="slider-wrapper">
+                        <div class="slider-label">Time per Question (seconds)</div>
+                        <div class="value-display" id="timeValue">30</div>
+                    </div>
+                    <input type="range" id="timeSlider" class="slider" min="15" max="60" value="30" step="1">
                 </div>
-                <input type="range" id="timeSlider" class="slider" min="5" max="60" value="30" step="1">
+            </div>
+        </div>
+        <div class="row quiz-button">
+            <div class="col-12 px-4 pt-3">
+                <button class="btn btn-primary" onclick="startQuiz()" id="submitBtn">Let's Go!</button>
+                <div class="border-bottom my-3"></div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-6 p-5">
-            <button class="btn btn-primary" id="submitBtn">Let's Go!</button
+
+    <!-- ====================== Main Quiz Section ===================== -->
+
+    <div id="quiz-main" style="display: none">
+
+        <!-- Question and Timer Section -->
+        <div class="row question-row">
+            <div class="col-12 col-md-6 px-4 d-flex justify-content-between align-items-end">
+                <div class="d-flex">
+                    <h2>Question: <span id="question-text"></span> of <span id="question-total-text"></span></h2>
+                </div>
+                <div class="d-flex"><span id="timer" class="counter"></span></div>
+            </div>
+            <div class="border-bottom mt-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6 px-4 d-flex justify-content-between align-items-end">
+                <div class="d-flex">
+                    <h3>Define ... <span id="qd"></span></h3>
+                </div>
+                <div class="d-flex">
+                    <button class="btn btn-secondary btn-sm" id="quitButton" style="width:60px;" onclick="location.reload()" class="btn btn-primary mt-4 ok-btn">Quit</button>
+                </div>
+            </div>
+            <div class="border-bottom mt-3"></div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-12 col-md-6 ps-4">
+                <button id="q1" class="btn btn-custom answer my-1" data-id="1"></button>
+                <button id="q2" class="btn btn-custom answer my-1" data-id="2"></button>
+                <button id="q3" class="btn btn-custom answer my-1" data-id="3"></button>
+                <button id="q4" class="btn btn-custom answer my-1" data-id="4"></button>
+                <button id="okButton" onclick="goAnswer()" class="btn btn-success mt-3 ok-btn" style="display: none">OK</button>
+                <button id="nextButton" onclick="nextQuestion()" class="btn mt-3 ok-btn" style="display: none"></button>
+            </div>
         </div>
     </div>
 
-    
+    <!-- ======================   Results Section ===================== -->
 
-<script>
+    <div id="quiz-results" style="display: none">
+
+        <!-- Show Results section with completion button to reload the page on click -->
+        <div class="row question-row">
+            <div class="col-12 col-md-6 px-4">
+                <h2>Quiz Complete!</h2>
+                <div class="border-bottom mt-3 mb-0"></div>
+                <h3>You scored <span id="results1"></span><br><span id="results2"></span></h3>
+                <button id="endButton" onclick="location.reload()" class="btn btn-primary mt-4 ok-btn">Click to go again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================== SCRIPT ===================== -->
+
+    <script>
+
+    // Define Global Variables 
+
+    let questionNumber = 0;                                                   // Current question being asked
+    let correctAnswer = 0;                                                    // Holds which answer is correct
+    let totalCorrect = 0;                                                     // Counts total correct answers
+    let questionData = [];                                                    // Store the set of questions 
+    let answerData = [];                                                      // Store the question's answer set so we can shuffle them    
+    let countdown;                                                            // To hold the timer                
+
+    const answerButtons = document.querySelectorAll('.answer');
+    let selectedAnswer = null; // Store the selected answer
+
+    // ================== Slider and Button mechanics ======================== 
+
     // Update Questions Slider Value
     const questionsSlider = document.getElementById('questionsSlider');
     const questionsValue = document.getElementById('questionsValue');
@@ -81,6 +157,238 @@
     timeSlider.addEventListener('input', function() {
         timeValue.textContent = timeSlider.value;
     });
+
+    // Event listener on buttons to handle answer selection
+    answerButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // If the same answer is clicked again, deselect it
+            if (selectedAnswer === button) {
+                button.classList.remove('selected');
+                selectedAnswer = null;
+                okButton.style.display = "none"; // Hide OK button when an answer is selected
+            } else {
+                // If a new answer is clicked, highlight it
+                if (selectedAnswer) {
+                    selectedAnswer.classList.remove('selected');
+                }
+                button.classList.add('selected');
+                selectedAnswer = button;
+                okButton.style.display = "block"; // Enable OK button when an answer is selected
+            }
+        });
+    });
+
+    // ================== MAIN FUNCTIONS ======================== 
+
+    // Set the Quiz countdown to a passed-in number of seconds 
+    function startTimer(seconds) {
+        let timerElement = document.getElementById("timer");
+        timerElement.textContent = seconds; 
+        let timeLeft = seconds-1;
+
+        // Set to run this every second
+        countdown = setInterval(function () {
+            timerElement.textContent = timeLeft; 
+            timeLeft--;
+
+            // If timer has run down 
+            if (timeLeft < 0) {
+
+                // Stop the timer 
+                clearInterval(countdown);
+
+                // Disable all the answer buttons
+                for (let i = 1; i <= 4; i++) {
+                    const elem = document.getElementById(`q${i}`);
+                    elem.disabled=true;
+                }
+                // Adjust the buttons to hide OK and show Time Up / Continue
+                let nextButton = document.getElementById("nextButton");
+                nextButton.textContent="OUT OF TIME - Click to Continue";
+                nextButton.classList.add('btn-danger');
+                nextButton.style.display = "block";
+                let okButton = document.getElementById("okButton");
+                okButton.style.display = "none";
+            } else {
+            // If the timer goes below 10 seconds, style it urgent!
+            if (timeLeft <10){
+                let counterElement = document.getElementById("timer");
+                counterElement.classList.add('urgent');
+                }
+            }
+        }, 1000);
+    }
+
+    // ------------------------------------------------------------------------------------------
+    // Handle displaying each question and also the end of the quiz
+    function nextQuestion() {
+        
+        // Increment the question number
+        questionNumber++;
+        startTimer(timeSlider.value);
+
+        // Reset the next button and the timer
+        let nextButton = document.getElementById("nextButton");
+        nextButton.style.display = "none";
+        nextButton.classList.remove('btn-success');
+        nextButton.classList.remove('btn-danger');
+        nextButton.textContent="";
+        let counterElement = document.getElementById("timer");
+        counterElement.classList.remove('urgent');
+        selectedAnswer = null;
+
+        // If not yet reached the end 
+        if (questionNumber <= questionsSlider.value){
+
+            // Load up the answers for this question and then shuffle them
+            answerData[0]=questionData[questionNumber-1].definition;
+            answerData[1]=questionData[questionNumber-1].alt1;
+            answerData[2]=questionData[questionNumber-1].alt2;
+            answerData[3]=questionData[questionNumber-1].alt3;
+            answerData.sort();
+
+            // Update the HTML with the question and answers
+            let quest = document.getElementById("qd");
+            quest.textContent=questionData[questionNumber-1].termname;
+
+            // Loop through each HTML answer button and update the text; check and record which one is the correct answer
+            for (let i = 1; i <= 4; i++) {
+                const elem = document.getElementById(`q${i}`);
+                elem.textContent=answerData[i-1];
+                elem.classList.remove('btn-success');
+                elem.classList.remove('btn-danger');
+                elem.classList.add('btn-outline-primary');
+                elem.disabled=false;
+                // If this answer matches the actual definition then set it as the correct answer
+                if (answerData[i-1] == questionData[questionNumber-1].definition) {correctAnswer=i;}  
+            }    
+
+            // Update the elements with the question number and question text
+            let questionId = document.getElementById("question-text");
+            let questionTotalId = document.getElementById("question-total-text");
+            questionId.textContent=questionNumber;
+            questionTotalId.textContent=questionsSlider.value;
+        }
+        // End of the quiz
+        else {
+            percentage = Math.round(100/questionsSlider.value * totalCorrect);
+            let resultsText1=`${totalCorrect} out of ${questionsSlider.value} (${percentage}%)`;
+            let resultsText2;
+
+            // Set a closing comment!
+            if (percentage == 100) {resultsText2="Excellent - You aced it!"}
+              else if (percentage >= 90) {resultsText2="You are an IT professional!"}
+              else if (percentage >= 80) {resultsText2="That's a good outcome, almost there!"}
+              else if (percentage >= 70) {resultsText2="Some good progress, keep learning!!"}
+              else if (percentage >= 60) {resultsText2="Needs some improvement!"}
+              else if (percentage >= 40) {resultsText2="Keep trying, some more study required!"}
+              else if (percentage > 0) {resultsText2="A lot more training required!"}
+              else if (percentage == 0) {resultsText2="Oh dear!"}
+
+            let results1 = document.getElementById("results1");
+            let results2 = document.getElementById("results2");
+            results1.textContent=resultsText1;
+            results2.textContent=resultsText2;
+            let resultsDiv = document.getElementById("quiz-results");
+            let quizDiv = document.getElementById("quiz-main");
+            quizDiv.style.display = "none";
+            resultsDiv.style.display = "block";
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------
+    // User has submitted the answer 
+    function goAnswer() {
+        
+        let nextButton = document.getElementById("nextButton");
+
+        // Stop the timer
+        clearInterval(countdown);
+
+        // Loop through the answers; disable each button; style the correct answer; style if wrong answer
+        for (let i = 1; i <= 4; i++) {
+            const button = document.getElementById(`q${i}`);
+
+            // Disable the button for future use
+            button.disabled = true;
+
+            // If this is the correct answer 
+            if (correctAnswer == i){
+                // Style it accordingly
+                button.classList.remove('btn-outline-primary');
+                button.classList.remove('selected');
+                button.classList.add('btn-success');
+                
+                // And Got it right - yes!!!
+                if (button == selectedAnswer){
+                    nextButton.textContent="CORRECT - Click to Continue";
+                    nextButton.classList.add('btn-success');                  
+                    totalCorrect++;}
+            }else{
+                
+                // This isn't the correct answer and it was selected i.e. it's wrong! Style it accorginly
+                if (button == selectedAnswer){
+                    button.classList.remove('btn-outline-primary');
+                    button.classList.remove('selected');
+                    button.classList.add('btn-danger');
+                    nextButton.textContent="INCORRECT - Click to Continue";
+                    nextButton.classList.add('btn-danger');
+                }
+            }
+        }
+
+        // Adjust the buttons to hide OK and show Continue
+        let okButton = document.getElementById("okButton");
+        okButton.style.display = "none";
+        nextButton.style.display = "block";
+    }
+
+    // ------------------------------------------------------------------------------------------
+    // Start quiz - Load the Question Set, Bring up quiz box, set the headings and timer
+    function startQuiz() {
+
+        // API endpoint URL
+        const termsURL = 'http://localhost:3000/public-api/terms'; // Replace with your actual API endpoint
+
+        // Fetch data from the API
+        fetch(termsURL)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error calling API');
+                }
+                return response.json(); // Parse the JSON response
+            })
+            .then(data => {
+                // Now randomise the order of the questions returned 
+                questionData = data.data.sort(() => Math.random() - 0.5);
+                
+                // Display the question box, hide the selection box
+                let selectionDiv = document.getElementById("quiz-selection");
+                let quizDiv = document.getElementById("quiz-main");
+                quizDiv.style.display = "block";
+                selectionDiv.style.display = "none";
+
+                // Call the function to load the question and answer text 
+                nextQuestion();
+            })
+            .catch(error => {
+                console.error('There was a problem with the API: ', error);
+        });
+    }
+
+    // ------------------------------------------------------------------------------------------
+    function init() {
+      //  let mode=0;
+
+        // Full mode
+       // if (mode == 1){
+        //    let selectionDiv = document.getElementById("quiz-selection");
+        //    let quizDiv = document.getElementById("quiz-main");
+        //    quizDiv.style.display = "none";
+        //    selectionDiv.style.display = "block";
+       // } else {startQuiz();}
+    }
+
 </script>
 
 </body>
