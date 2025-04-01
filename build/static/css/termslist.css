@@ -163,7 +163,6 @@ p {
     color:blue;
 }
 
-
 /* Circle effect for the timer counter */
 .counter {
     width: 50px; 
@@ -223,6 +222,26 @@ p {
 .ok-btn {
     width: 100%; /* Full width for button */
 }
+
+/* LANDING PAGE STYLING SECTION */
+
+.hl {
+    font-weight:bold;
+}
+
+.hl2 {
+    font-weight:bold;
+    color:blue;
+}
+
+.st {
+    font-size:13px;
+}
+
+.landing-page p {
+    font-size:15px;
+}
+
 
 /* RESPONSIVE ADJUSTMENTS */
 
