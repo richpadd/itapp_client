@@ -45,14 +45,19 @@ h1  {
 
 /* Sytle the header links */
 .header a {
-  font-size:15px;
-  color: white;
-  padding:0px;
   text-decoration: none;
+  color: cyan;
 }
 
 .header a:hover {
   color: yellow;
+}
+
+/* Sytle the header links */
+.headnav {
+  font-size:15px;
+  color: white;
+  padding:0px;
 }
 
 /* Sytle the header logout button */
@@ -197,6 +202,17 @@ h1  {
 .table tbody tr:hover {
   background-color: lightgrey;
   cursor: pointer; 
+}
+
+/* Remove sytling for no results */
+.no-results-row {
+  background-color: white !important;
+}
+
+/* Remove hover effect for no results */
+.no-results-row:hover {
+  background-color: white !important;
+  cursor: default !important; 
 }
 
 /* Fix width for the table columns to help with display asthetics */

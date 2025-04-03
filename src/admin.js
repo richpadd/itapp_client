@@ -211,16 +211,26 @@ const AdminApp = () => {
     openModal('success','Item Changes','Updated Successfully','Ok','')
   };
 
+ // Conditional logic for setting the API URL
+ // (i tried to get this configurable in the ENV file, but no luck, so using React built-in setting)
+const updateApiURL = () => {
+  setApiURL(prevURL => {
+    let newURL;
+    if (process.env.NODE_ENV === "development") {
+      newURL = "http://localhost:3000";
+    } else {
+      newURL = "https://rpadd.duckdns.org";
+    }
+    return newURL;  
+  });
+};
+
   // ================================================================================================
   // ---------------    Initial Mouting Functions ------------------------------
 
   useEffect(() => {
 
-   // Set the Dev vs Prod API URL (i tried to get this configurable in the ENV file, but no luck, so using React built-in setting)
-    if (process.env.NODE_ENV === "development"){
-      setApiURL("http://localhost:3000");}
-      else{setApiURL("https://rpadd.duckdns.org");
-    }
+    updateApiURL();                             // Set the URL based on the environment
 
     // Check if already logged in first (e.g. hit refresh), if so, set the user info and load the page info
     // Then get all of the categories and terms for building the screen
@@ -399,11 +409,11 @@ const AdminApp = () => {
       {/* ----------------------------------  Header Section  -------------------------------------*/}  
       <div>
         <div className="header row d-flex align-items-center">
-          <div className="col text-start"><h1>IT Terms <span className="head-span">Admin Console</span></h1></div>
+          <div className="col text-start"><h1><a href="index.html">IT Terms</a> <span className="head-span">Admin Console</span></h1></div>
           <div className="col text-start">
-            <a className="d-block" href="index.html">&gt; Landing Page</a>
-            <a className="d-block" href="termslist.html">&gt; Glossary</a>
-            <a className="d-block" href="termsquiz.html">&gt; Quiz</a>
+            <a className="headnav d-block" href="index.html">&gt; Landing Page</a>
+            <a className="headnav d-block" href="termslist.html">&gt; Glossary</a>
+            <a className="headnav d-block" href="termsquiz.html">&gt; Quiz</a>
             {user && (<button className="d-block logout-button" onClick={logout}>Logout</button>)}
           </div>
         </div>
@@ -510,12 +520,18 @@ const AdminApp = () => {
                 </tr>
               </thead>
               <tbody>
-                {/* Loop through all of the terms */}
-                {filteredTerms.map((fterm, index) => (
-                  <tr key={index} onClick={() => handleRowClick(fterm)}>
-                    <td>{fterm.catname}</td><td>{fterm.termname}</td><td>{fterm.definition}</td>
-                  </tr>
-                ))}
+                {/* If no terms in the filter, show No Results, esle lLoop through displaying all of the terms */}
+                {filteredTerms.length === 0 ? (
+                    <tr className="no-results-row"><td colSpan="3">No Results</td></tr>
+                    ) : (
+                    filteredTerms.map((fterm, index) => (
+                      <tr key={index} onClick={() => handleRowClick(fterm)}>
+                        <td>{fterm.catname}</td>
+                        <td>{fterm.termname}</td>
+                        <td>{fterm.definition}</td>
+                      </tr>
+                    ))
+                  )}
               </tbody>
             </table>
           </div>
