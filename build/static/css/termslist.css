@@ -61,31 +61,29 @@ p {
     text-align: center;
     height: 100px;
     padding-left:20px;
-    line-height:20px;
-}
-
-.head-span {
-    color: white;
-}
-
-/* Style the filter */
-.filter {
-    font-size: 12px;
-    font-weight: 600;
-    padding-top:10px;
+    line-height: 16px;
   }
-
-/* Sytle the header links */
+  
+  .head-span {
+    color: white;
+  }
+  
+  /* Sytle the header links */
   .header a {
+    text-decoration: none;
+    color: cyan;
+  }
+  
+  .header a:hover {
+    color: yellow;
+  }
+  
+  /* Sytle the header links */
+  .headnav {
     font-size:15px;
     color: white;
     padding:0px;
-    text-decoration: none;
-}
-  
-.header a:hover {
-    color: yellow;
-}
+  }
 
 /* MAIN GLOSSARY SECTION */
 
