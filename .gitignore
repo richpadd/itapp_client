@@ -7,8 +7,9 @@ package-lock.json
 rebuild.bat
 gitpush.bat
 .env
-index.html
-termslist.html
-termsquiz.html
-
-
+/index.html
+!/build/index.html
+/termslist.html
+!/build/termslist.html
+/termsquiz.html
+!/build/termsquiz.html
