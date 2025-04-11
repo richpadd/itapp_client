@@ -7,7 +7,7 @@ I have included the /src/ folder to the repo in order for the core, original Rea
 
 **Other Page Source Code**
 
-Index.html, Termilist.html and Termsquiz.html are the other main pages I have developed for the site and are all copied in to the /build folder during each continuous redeployment to production
+Index.html, Termslist.html and Termsquiz.html are the other main pages I have developed for the site and are all copied in to the /build folder during each continuous redeployment to production
 
 
 **React Bundled Code**
